@@ -94,4 +94,4 @@ app/src/main/java/app/traceday/
 └── ui/         # Compose: карта, история, настройки
 ```
 
-Подробнее — в [ARCHITECTURE.md](ARCHITECTURE.md). План работ — [PLAN.md](PLAN.md). Аудит безопасности (хранение токенов, sensitive-данные, модель угроз) — [SECURITY.md](SECURITY.md).
+Подробнее — в [ARCHITECTURE.md](ARCHITECTURE.md). План работ — [PLAN.md](PLAN.md). Аудит безопасности (хранение токенов, sensitive-данные, модель угроз) — [SECURITY.md](SECURITY.md). Открытые задачи — [TODO.md](TODO.md).
