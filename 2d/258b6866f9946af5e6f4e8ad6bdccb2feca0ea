@@ -1,0 +1,20 @@
+SECURITY.md
+  s_d5751da9c74824::t_e51b65a3f39976 46,48-57
+  s_d5751da9c74824::t_411ef61cde5da4 79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2d258b6866f9946af5e6f4e8ad6bdccb2feca0ea",
+  "prompts": {},
+  "sessions": {
+    "s_d5751da9c74824": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_e79111da5ffelPQJWRVQSiSkWs",
+        "model": "glm-5.3"
+      },
+      "human_author": "Александр Кубышкин <askubyshki@mts.ru>"
+    }
+  }
+}
