@@ -93,6 +93,8 @@ sequenceDiagram
 
 `LinkParser` распознаёт: `drive.google.com/file/d/<id>`, `open?id=`, `uc?id=`; `disk.yandex.ru|yadi.sk|360.yandex.ru/d/<key>`; произвольный URL. Далее `TrackImporter`: скачивание (Google — API с токеном либо публичный `uc?export=download`; Яндекс — публичный download-эндпоинт; остальное — прямой GET) → декод JSONL → замена трека с тем же `sourceUrl` → вставка `tracks` + `points(uploaded=true)`.
 
+Обновление чужих треков: `MapViewModel.refreshImported()` вызывается при входе на экран карты (`LaunchedEffect(Unit)`), троттлинг 10 минут; обновляются только треки с `enabled=true` и непустым `sourceUrl` (метод `TrackImporter.refresh` перезаливает точки по ссылке-источнику). Уход с экрана карты / скрытие чипа / фон приложения — обновления прекращаются.
+
 ## Устойчивость
 
 | Ситуация | Поведение |

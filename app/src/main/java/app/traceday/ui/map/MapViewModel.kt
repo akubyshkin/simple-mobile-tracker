@@ -90,6 +90,7 @@ class MapViewModel @Inject constructor(
     private val busy = MutableStateFlow(false)
     private val message = MutableStateFlow<String?>(null)
     private val shareUrl = MutableStateFlow<String?>(null)
+    private var lastImportedRefreshAt = 0L
 
     private val tracks: StateFlow<List<TrackEntity>> = dao.tracksFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
@@ -164,6 +165,25 @@ class MapViewModel @Inject constructor(
         shareUrl.value = null
     }
 
+    fun refreshImported() {
+        val now = clock.now()
+        if (now - lastImportedRefreshAt < IMPORTED_REFRESH_THROTTLE_MS) return
+        lastImportedRefreshAt = now
+        val enabled = tracks.value.filter {
+            it.kind == TrackKind.IMPORTED && it.enabled && it.sourceUrl != null
+        }
+        if (enabled.isEmpty()) return
+        viewModelScope.launch {
+            var failed = 0
+            for (track in enabled) {
+                if (trackImporter.refresh(track) is app.traceday.cloud.ImportResult.Error) failed++
+            }
+            if (failed > 0) {
+                message.value = "Не удалось обновить чужие треки: $failed из ${enabled.size}"
+            }
+        }
+    }
+
     private fun buildState(core: CoreState, snapshot: TracksSnapshot, sync: SyncSnapshot): MapUiState {
         val dayKey = core.day.toString()
         val dayBounds = DayKeys.bounds(dayKey)
@@ -217,5 +237,6 @@ class MapViewModel @Inject constructor(
 
     companion object {
         const val DEFAULT_SELF_COLOR = 0xFF4F8CFF
+        private const val IMPORTED_REFRESH_THROTTLE_MS = 10 * 60_000L
     }
 }

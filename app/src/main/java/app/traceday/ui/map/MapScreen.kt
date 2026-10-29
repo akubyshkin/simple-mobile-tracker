@@ -102,6 +102,9 @@ fun MapScreen(
     val clipboard = LocalClipboardManager.current
     val context = LocalContext.current
 
+    LaunchedEffect(Unit) {
+        vm.refreshImported()
+    }
     LaunchedEffect(state.message) {
         state.message?.let {
             snackbarHost.showSnackbar(it)
