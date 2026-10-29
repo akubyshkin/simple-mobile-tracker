@@ -1,0 +1,27 @@
+README.md
+  s_d5751da9c74824::t_2d1e93214c5e20 34
+app/proguard-rules.pro
+  s_d5751da9c74824::t_09d4573996c77a 1-26
+app/build.gradle.kts
+  s_d5751da9c74824::t_0e570d75d610c3 35-36
+  s_d5751da9c74824::t_14e7c11b151d3d 17-18
+SECURITY.md
+  s_d5751da9c74824::t_726d79e0f2ad18 54,56-58
+  s_d5751da9c74824::t_ca00a68265750a 71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b6751b1bf186fedef76b2a49f778bcd857a39088",
+  "prompts": {},
+  "sessions": {
+    "s_d5751da9c74824": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_e79111da5ffelPQJWRVQSiSkWs",
+        "model": "glm-5.3"
+      },
+      "human_author": "Александр Кубышкин <askubyshki@mts.ru>"
+    }
+  }
+}
