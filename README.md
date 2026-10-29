@@ -31,7 +31,7 @@ Kotlin 2.0 · Jetpack Compose (Material 3, тёмная тема) · Hilt · Roo
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Release: задать подпись в `app/build.gradle.kts` (`signingConfigs`) и выполнить `./gradlew assembleRelease`.
+Release: задать подпись в `app/build.gradle.kts` (`signingConfigs`) и выполнить `./gradlew assembleRelease`. Release по умолчанию собирается с R8 (сжатие + обфускация + shrink resources, ~2.6 МБ против ~22 МБ debug); отключить: `./gradlew assembleRelease -Ptraceday.minify=false`. Правила — `app/proguard-rules.pro`.
 
 Через Android Studio: Open → каталог проекта → Run ▶.
 

@@ -14,6 +14,8 @@ val localProps = Properties().apply {
     if (f.exists()) f.inputStream().use { load(it) }
 }
 
+val minifyEnabled = providers.gradleProperty("traceday.minify").getOrElse("true").toBoolean()
+
 android {
     namespace = "app.traceday"
     compileSdk = 34
@@ -30,7 +32,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = minifyEnabled
+            isShrinkResources = minifyEnabled
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
