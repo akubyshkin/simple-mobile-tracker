@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TraceDay</string>
+    <string name="tab_map">Карта</string>
+    <string name="tab_history">История</string>
+    <string name="tab_settings">Настройки</string>
+    <string name="notif_channel_tracking">Запись трека</string>
+    <string name="notif_channel_sync">Синхронизация</string>
+    <string name="notif_tracking_title">Идёт запись трека</string>
+    <string name="notif_tracking_text">TraceDay фиксирует ваши перемещения</string>
+    <string name="notif_action_stop">Стоп</string>
+    <string name="map_share_day">Поделиться днём</string>
+    <string name="map_import">Импорт трека</string>
+    <string name="map_record_start">Начать запись</string>
+    <string name="map_record_stop">Остановить запись</string>
+    <string name="import_title">Импорт трека по ссылке</string>
+    <string name="import_hint">Ссылка Google Drive, Яндекс Диска или на файл .jsonl</string>
+    <string name="import_paste">Вставить</string>
+    <string name="import_do">Скачать</string>
+    <string name="import_cancel">Отмена</string>
+    <string name="settings_section_recording">Запись</string>
+    <string name="settings_interval">Интервал фиксации</string>
+    <string name="settings_high_accuracy">Высокая точность (GPS)</string>
+    <string name="settings_balanced">Экономный режим (сеть и вышки)</string>
+    <string name="settings_autostart">Возобновлять запись после перезагрузки</string>
+    <string name="settings_section_cloud">Облако</string>
+    <string name="settings_provider_none">Не использовать</string>
+    <string name="settings_provider_google">Google Drive</string>
+    <string name="settings_provider_yandex">Яндекс Диск</string>
+    <string name="settings_sign_in">Подключить</string>
+    <string name="settings_sign_out">Отключить</string>
+    <string name="settings_sync_now">Синхронизировать сейчас</string>
+    <string name="settings_section_storage">Хранение</string>
+    <string name="settings_retention">Данные хранятся 7 дней (локально и в облаке)</string>
+    <string name="settings_clear_all">Удалить все локальные данные</string>
+    <string name="settings_section_about">О приложении</string>
+    <string name="history_empty">Треков пока нет</string>
+    <string name="perm_location_rationale">Разрешите доступ к геолокации, чтобы записывать трек</string>
+</resources>
