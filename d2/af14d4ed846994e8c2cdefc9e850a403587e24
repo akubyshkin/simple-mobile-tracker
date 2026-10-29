@@ -1,0 +1,43 @@
+app/src/main/java/app/traceday/cloud/yandex/YandexAuthManager.kt
+  s_d5751da9c74824::t_886964bcf0f42d 67
+  s_d5751da9c74824::t_d82148b1fd06ab 105
+  s_d5751da9c74824::t_b55434fb109c82 124
+  s_d5751da9c74824::t_a9730550c0ee20 18,23-27,42-45,55-60,62-64,69,73-91,119-123,125-131,152-157,161-162
+  s_d5751da9c74824::t_8e6a5652bd3cfb 4
+  s_d5751da9c74824::t_2214bba96d37d1 47-51,53
+  s_d5751da9c74824::t_1347982a42b8ad 46
+SECURITY.md
+  s_d5751da9c74824::t_a59b25f4e5f1a1 66-67
+  s_d5751da9c74824::t_ba3feb9b064cf7 31,33,35-38,40,42,44
+app/src/test/java/app/traceday/YandexAuthStateTest.kt
+  s_d5751da9c74824::t_65bd8e46cd8ca1 30
+  s_d5751da9c74824::t_40d30c98d14cb5 1-29,31-85
+app/src/main/java/app/traceday/ui/settings/SettingsViewModel.kt
+  s_d5751da9c74824::t_a1050a2355bebb 47
+  s_d5751da9c74824::t_ea4add4b23eb7a 42
+app/src/main/java/app/traceday/cloud/CloudRepository.kt
+  s_d5751da9c74824::t_064a2e2d3c9385 67,69
+app/src/main/java/app/traceday/ui/settings/SettingsScreen.kt
+  s_d5751da9c74824::t_e62b619519557b 194
+app/src/main/java/app/traceday/ui/MainActivity.kt
+  s_d5751da9c74824::t_078b3491844517 44-46,48
+  s_d5751da9c74824::t_61b8b51f485872 10
+app/src/main/java/app/traceday/cloud/TokenStore.kt
+  s_d5751da9c74824::t_d1971e4c3e375d 27-29,41-49,54-59,63-71,73-89,91,95
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d2af14d4ed846994e8c2cdefc9e850a403587e24",
+  "prompts": {},
+  "sessions": {
+    "s_d5751da9c74824": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_e79111da5ffelPQJWRVQSiSkWs",
+        "model": "glm-5.3"
+      },
+      "human_author": "Александр Кубышкин <askubyshki@mts.ru>"
+    }
+  }
+}
