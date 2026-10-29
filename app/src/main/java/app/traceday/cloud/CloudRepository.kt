@@ -64,10 +64,9 @@ class CloudRepository @Inject constructor(
 
     suspend fun tryGoogleSilentSignIn(): Boolean = googleAuthManager.trySilentSignIn()
 
-    fun yandexAuthUrl(): String? = yandexAuthManager.authUrl()
+    fun beginYandexAuth(): String? = yandexAuthManager.beginAuthSession()
 
-    suspend fun handleYandexCode(code: String): Boolean =
-        yandexAuthManager.exchangeCode(code)
+    fun isYandexConfigured(): Boolean = yandexAuthManager.isConfigured
 
     suspend fun signOut(option: CloudProviderOption) {
         when (option) {

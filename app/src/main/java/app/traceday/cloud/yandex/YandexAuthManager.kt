@@ -1,6 +1,7 @@
 package app.traceday.cloud.yandex
 
 import android.net.Uri
+import androidx.annotation.VisibleForTesting
 import app.traceday.BuildConfig
 import app.traceday.cloud.CloudProvider
 import app.traceday.cloud.StoredAuth
@@ -14,9 +15,15 @@ import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.URLEncoder
+import java.security.SecureRandom
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
+
+sealed class YandexAuthResult {
+    data object Success : YandexAuthResult()
+    data class Error(val message: String) : YandexAuthResult()
+}
 
 @Serializable
 data class YandexTokenDto(
@@ -32,33 +39,56 @@ class YandexAuthManager @Inject constructor(
 ) {
 
     private val json = defaultJson
+    private val random = SecureRandom()
 
-    val isConfigured: Boolean get() = BuildConfig.YANDEX_CLIENT_ID.isNotEmpty()
+    @Volatile private var pendingState: String? = null
+    @Volatile private var pendingStateAt: Long = 0
 
-    fun authUrl(): String? {
-        if (!isConfigured) return null
-        val redirect = URLEncoder.encode(BuildConfig.YANDEX_REDIRECT_URI, "UTF-8")
-        return "https://oauth.yandex.ru/authorize?response_type=code" +
-            "&client_id=${BuildConfig.YANDEX_CLIENT_ID}" +
-            "&redirect_uri=$redirect" +
-            "&force_confirm=true"
-    }
+    @VisibleForTesting
+    internal var clientIdOverride: String? = null
+
+    private val clientId: String
+        get() = clientIdOverride ?: BuildConfig.YANDEX_CLIENT_ID
+
+    val isConfigured: Boolean get() = clientId.isNotEmpty()
 
     fun matchesRedirect(uri: Uri?): Boolean =
         uri?.scheme == BuildConfig.YANDEX_REDIRECT_URI.substringBefore("://") &&
             uri.host == BuildConfig.YANDEX_REDIRECT_URI.substringAfter("://")
 
-    suspend fun exchangeCode(code: String): Boolean = withContext(Dispatchers.IO) {
-        val token = requestToken(
-            mapOf(
-                "grant_type" to "authorization_code",
-                "code" to code,
-                "client_id" to BuildConfig.YANDEX_CLIENT_ID,
-                "redirect_uri" to BuildConfig.YANDEX_REDIRECT_URI
-            )
-        ) ?: return@withContext false
-        tokenStore.save(CloudProvider.YANDEX, token)
-        true
+    @Synchronized
+    fun beginAuthSession(): String? {
+        if (!isConfigured) return null
+        val state = randomState()
+        pendingState = state
+        pendingStateAt = System.currentTimeMillis()
+        val redirect = URLEncoder.encode(BuildConfig.YANDEX_REDIRECT_URI, "UTF-8")
+        return "https://oauth.yandex.ru/authorize?response_type=code" +
+            "&client_id=$clientId" +
+            "&redirect_uri=$redirect" +
+            "&state=$state" +
+            "&force_confirm=true"
+    }
+
+    suspend fun handleRedirect(uri: Uri): YandexAuthResult {
+        val expected = synchronized(this) {
+            val state = pendingState
+            pendingState = null
+            state
+        }
+        val code = uri.getQueryParameter("code")
+        val state = uri.getQueryParameter("state")
+        val error = uri.getQueryParameter("error")
+        return when {
+            error != null -> YandexAuthResult.Error("Авторизация отклонена")
+            code == null -> YandexAuthResult.Error("В ответе нет кода авторизации")
+            expected == null -> YandexAuthResult.Error("Вход не был инициирован из приложения")
+            state != expected -> YandexAuthResult.Error("Неверный параметр state — запрос отклонён")
+            System.currentTimeMillis() - pendingStateAt > SESSION_TTL_MS ->
+                YandexAuthResult.Error("Сессия входа истекла, попробуйте ещё раз")
+            exchangeCode(code) -> YandexAuthResult.Success
+            else -> YandexAuthResult.Error("Не удалось обменять код на токен")
+        }
     }
 
     @Synchronized
@@ -72,7 +102,7 @@ class YandexAuthManager @Inject constructor(
             mapOf(
                 "grant_type" to "refresh_token",
                 "refresh_token" to refresh,
-                "client_id" to BuildConfig.YANDEX_CLIENT_ID
+                "client_id" to clientId
             )
         ) ?: return null
         val merged = fresh.copy(refreshToken = fresh.refreshToken ?: refresh)
@@ -84,6 +114,19 @@ class YandexAuthManager @Inject constructor(
 
     fun signOut() {
         tokenStore.clear(CloudProvider.YANDEX)
+    }
+
+    private suspend fun exchangeCode(code: String): Boolean = withContext(Dispatchers.IO) {
+        val token = requestToken(
+            mapOf(
+                "grant_type" to "authorization_code",
+                "code" to code,
+                "client_id" to clientId,
+                "redirect_uri" to BuildConfig.YANDEX_REDIRECT_URI
+            )
+        ) ?: return@withContext false
+        tokenStore.save(CloudProvider.YANDEX, token)
+        true
     }
 
     private fun requestToken(form: Map<String, String>): StoredAuth? {
@@ -106,8 +149,16 @@ class YandexAuthManager @Inject constructor(
         }
     }
 
+    private fun randomState(): String {
+        val bytes = ByteArray(STATE_BYTES)
+        random.nextBytes(bytes)
+        return bytes.joinToString("") { "%02x".format(it) }
+    }
+
     companion object {
         private const val TOKEN_URL = "https://oauth.yandex.ru/token"
         private const val EXPIRY_MARGIN = 60_000L
+        private const val SESSION_TTL_MS = 10 * 60_000L
+        private const val STATE_BYTES = 16
     }
 }

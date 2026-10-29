@@ -191,7 +191,7 @@ fun SettingsScreen(vm: SettingsViewModel = hiltViewModel()) {
                         }
                     } else if (state.yandexConfigured) {
                         Button(onClick = {
-                            vm.yandexAuthUrl()?.let { url ->
+                            vm.beginYandexAuth()?.let { url ->
                                 CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(url))
                             }
                         }) {

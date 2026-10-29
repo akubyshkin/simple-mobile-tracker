@@ -39,12 +39,12 @@ class SettingsViewModel @Inject constructor(
         settingsRepository.settings,
         cloudRepository.authState
     ) { settings, auth ->
-        SettingsUiState(settings, auth, cloudRepository.yandexAuthUrl() != null)
+        SettingsUiState(settings, auth, cloudRepository.isYandexConfigured())
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsUiState())
 
     fun googleSignInIntent(): Intent = cloudRepository.googleSignInIntent()
 
-    fun yandexAuthUrl(): String? = cloudRepository.yandexAuthUrl()
+    fun beginYandexAuth(): String? = cloudRepository.beginYandexAuth()
 
     fun onGoogleSignInResult(data: Intent?) {
         viewModelScope.launch {

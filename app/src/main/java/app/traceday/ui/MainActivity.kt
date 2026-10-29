@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import app.traceday.cloud.yandex.YandexAuthManager
+import app.traceday.cloud.yandex.YandexAuthResult
 import app.traceday.data.prefs.CloudProviderOption
 import app.traceday.data.prefs.SettingsRepository
 import app.traceday.ui.theme.TraceDayTheme
@@ -40,12 +41,11 @@ class MainActivity : ComponentActivity() {
     private fun handleOAuthIntent(intent: Intent?) {
         val uri = intent?.data ?: return
         if (!yandexAuthManager.matchesRedirect(uri)) return
-        val code = uri.getQueryParameter("code")
-        if (code != null) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                if (yandexAuthManager.exchangeCode(code)) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            when (yandexAuthManager.handleRedirect(uri)) {
+                is YandexAuthResult.Success ->
                     settingsRepository.setCloud(CloudProviderOption.YANDEX)
-                }
+                is YandexAuthResult.Error -> Unit
             }
         }
     }
