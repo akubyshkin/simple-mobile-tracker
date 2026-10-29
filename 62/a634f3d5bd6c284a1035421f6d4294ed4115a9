@@ -1,0 +1,154 @@
+.gitignore
+  h_5dd73cf7b9face 1-11
+ARCHITECTURE.md
+  h_5dd73cf7b9face 1-120
+PLAN.md
+  h_5dd73cf7b9face 1-35
+README.md
+  h_5dd73cf7b9face 1-96
+app/build.gradle.kts
+  h_5dd73cf7b9face 1-106
+app/proguard-rules.pro
+  h_5dd73cf7b9face 1
+app/src/main/AndroidManifest.xml
+  h_5dd73cf7b9face 1-69
+app/src/main/java/app/traceday/TraceDayApp.kt
+  h_5dd73cf7b9face 1-49
+app/src/main/java/app/traceday/cloud/CloudClient.kt
+  h_5dd73cf7b9face 1-19
+app/src/main/java/app/traceday/cloud/CloudModels.kt
+  h_5dd73cf7b9face 1-30
+app/src/main/java/app/traceday/cloud/CloudRepository.kt
+  h_5dd73cf7b9face 1-79
+app/src/main/java/app/traceday/cloud/HttpCommon.kt
+  h_5dd73cf7b9face 1-68
+app/src/main/java/app/traceday/cloud/TokenStore.kt
+  h_5dd73cf7b9face 1-92
+app/src/main/java/app/traceday/cloud/TrackImporter.kt
+  h_5dd73cf7b9face 1-93
+app/src/main/java/app/traceday/cloud/format/TrackFileCodec.kt
+  h_5dd73cf7b9face 1-37
+app/src/main/java/app/traceday/cloud/google/DriveApi.kt
+  h_5dd73cf7b9face 1-76
+app/src/main/java/app/traceday/cloud/google/GoogleAuthInterceptor.kt
+  h_5dd73cf7b9face 1-28
+app/src/main/java/app/traceday/cloud/google/GoogleAuthManager.kt
+  h_5dd73cf7b9face 1-113
+app/src/main/java/app/traceday/cloud/google/GoogleDriveClient.kt
+  h_5dd73cf7b9face 1-130
+app/src/main/java/app/traceday/cloud/yandex/YandexAuthInterceptor.kt
+  h_5dd73cf7b9face 1-27
+app/src/main/java/app/traceday/cloud/yandex/YandexAuthManager.kt
+  h_5dd73cf7b9face 1-113
+app/src/main/java/app/traceday/cloud/yandex/YandexDiskApi.kt
+  h_5dd73cf7b9face 1-54
+app/src/main/java/app/traceday/cloud/yandex/YandexDiskClient.kt
+  h_5dd73cf7b9face 1-114
+app/src/main/java/app/traceday/core/Clock.kt
+  h_5dd73cf7b9face 1-9
+app/src/main/java/app/traceday/core/day/DayKeys.kt
+  h_5dd73cf7b9face 1-21
+app/src/main/java/app/traceday/core/geo/GeoMath.kt
+  h_5dd73cf7b9face 1-18
+app/src/main/java/app/traceday/core/link/LinkParser.kt
+  h_5dd73cf7b9face 1-28
+app/src/main/java/app/traceday/core/retention/RetentionPolicy.kt
+  h_5dd73cf7b9face 1-16
+app/src/main/java/app/traceday/data/local/AppDatabase.kt
+  h_5dd73cf7b9face 1-17
+app/src/main/java/app/traceday/data/local/TrackDao.kt
+  h_5dd73cf7b9face 1-74
+app/src/main/java/app/traceday/data/local/TrackEntities.kt
+  h_5dd73cf7b9face 1-54
+app/src/main/java/app/traceday/data/prefs/SettingsRepository.kt
+  h_5dd73cf7b9face 1-85
+app/src/main/java/app/traceday/di/AppModule.kt
+  h_5dd73cf7b9face 1-48
+app/src/main/java/app/traceday/di/CloudModule.kt
+  h_5dd73cf7b9face 1-76
+app/src/main/java/app/traceday/domain/TrackModels.kt
+  h_5dd73cf7b9face 1-62
+app/src/main/java/app/traceday/service/TrackingService.kt
+  h_5dd73cf7b9face 1-206
+app/src/main/java/app/traceday/sync/BootReceiver.kt
+  h_5dd73cf7b9face 1-33
+app/src/main/java/app/traceday/sync/CleanupWorker.kt
+  h_5dd73cf7b9face 1-38
+app/src/main/java/app/traceday/sync/SyncScheduler.kt
+  h_5dd73cf7b9face 1-53
+app/src/main/java/app/traceday/sync/SyncWorker.kt
+  h_5dd73cf7b9face 1-70
+app/src/main/java/app/traceday/ui/MainActivity.kt
+  h_5dd73cf7b9face 1-52
+app/src/main/java/app/traceday/ui/TraceDayRoot.kt
+  h_5dd73cf7b9face 1-102
+app/src/main/java/app/traceday/ui/components/Common.kt
+  h_5dd73cf7b9face 1-125
+app/src/main/java/app/traceday/ui/history/HistoryScreen.kt
+  h_5dd73cf7b9face 1-118
+app/src/main/java/app/traceday/ui/history/HistoryViewModel.kt
+  h_5dd73cf7b9face 1-43
+app/src/main/java/app/traceday/ui/map/MapScreen.kt
+  h_5dd73cf7b9face 1-476
+app/src/main/java/app/traceday/ui/map/MapViewModel.kt
+  h_5dd73cf7b9face 1-221
+app/src/main/java/app/traceday/ui/settings/SettingsScreen.kt
+  h_5dd73cf7b9face 1-312
+app/src/main/java/app/traceday/ui/settings/SettingsViewModel.kt
+  h_5dd73cf7b9face 1-98
+app/src/main/java/app/traceday/ui/theme/Color.kt
+  h_5dd73cf7b9face 1-13
+app/src/main/java/app/traceday/ui/theme/Theme.kt
+  h_5dd73cf7b9face 1-30
+app/src/main/res/drawable/ic_launcher_foreground.xml
+  h_5dd73cf7b9face 1-16
+app/src/main/res/drawable/ic_stat_tracking.xml
+  h_5dd73cf7b9face 1-11
+app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+  h_5dd73cf7b9face 1-6
+app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+  h_5dd73cf7b9face 1-6
+app/src/main/res/values/colors.xml
+  h_5dd73cf7b9face 1-5
+app/src/main/res/values/strings.xml
+  h_5dd73cf7b9face 1-39
+app/src/main/res/values/themes.xml
+  h_5dd73cf7b9face 1-6
+app/src/test/java/app/traceday/DayKeysTest.kt
+  h_5dd73cf7b9face 1-55
+app/src/test/java/app/traceday/LinkParserTest.kt
+  h_5dd73cf7b9face 1-56
+app/src/test/java/app/traceday/RetentionPolicyTest.kt
+  h_5dd73cf7b9face 1-35
+app/src/test/java/app/traceday/TrackDaoTest.kt
+  h_5dd73cf7b9face 1-126
+app/src/test/java/app/traceday/TrackFileCodecTest.kt
+  h_5dd73cf7b9face 1-56
+app/src/test/java/app/traceday/TrackStatsCalculatorTest.kt
+  h_5dd73cf7b9face 1-55
+build.gradle.kts
+  h_5dd73cf7b9face 1-8
+gradle.properties
+  h_5dd73cf7b9face 1-4
+gradle/libs.versions.toml
+  h_5dd73cf7b9face 1-78
+gradle/wrapper/gradle-wrapper.properties
+  h_5dd73cf7b9face 1-7
+gradlew
+  h_5dd73cf7b9face 1-252
+gradlew.bat
+  h_5dd73cf7b9face 1-94
+settings.gradle.kts
+  h_5dd73cf7b9face 1-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "62a634f3d5bd6c284a1035421f6d4294ed4115a9",
+  "prompts": {},
+  "humans": {
+    "h_5dd73cf7b9face": {
+      "author": "Александр Кубышкин <askubyshki@mts.ru>"
+    }
+  }
+}
