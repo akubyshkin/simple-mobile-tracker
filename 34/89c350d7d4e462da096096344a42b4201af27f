@@ -1,0 +1,29 @@
+ARCHITECTURE.md
+  s_d5751da9c74824::t_c55a7355267aad 96-97
+app/src/main/java/app/traceday/ui/map/MapViewModel.kt
+  s_d5751da9c74824::t_27d30397652cc4 240
+  s_d5751da9c74824::t_1c47e73aff958f 93
+  s_d5751da9c74824::t_a0ffba0376e6a4 168-186
+README.md
+  s_d5751da9c74824::t_8ae8f7465abcc9 73-74
+app/src/main/java/app/traceday/ui/map/MapScreen.kt
+  s_d5751da9c74824::t_611f50451ceb93 105-107
+app/src/main/java/app/traceday/cloud/TrackImporter.kt
+  s_d5751da9c74824::t_cc496ac37a32d0 11,32-36,40-47,50-79,81-83,85,87,94,100,112-135
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3489c350d7d4e462da096096344a42b4201af27f",
+  "prompts": {},
+  "sessions": {
+    "s_d5751da9c74824": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_e79111da5ffelPQJWRVQSiSkWs",
+        "model": "glm-5.3"
+      },
+      "human_author": "Александр Кубышкин <askubyshki@mts.ru>"
+    }
+  }
+}
