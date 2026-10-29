@@ -1,8 +1,8 @@
 package app.traceday.cloud.yandex
 
-import app.traceday.cloud.AuthRequiredException
 import app.traceday.cloud.CloudClient
 import app.traceday.cloud.CloudException
+import app.traceday.cloud.CloudFolderPath
 import app.traceday.cloud.CloudProvider
 import app.traceday.cloud.RemoteDayFile
 import app.traceday.cloud.cloudCall
@@ -12,7 +12,9 @@ import app.traceday.cloud.httpPutBytes
 import app.traceday.cloud.parseIsoMillis
 import app.traceday.core.day.DayKeys
 import app.traceday.core.link.TrackLink
+import app.traceday.data.prefs.SettingsRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -25,22 +27,31 @@ import javax.inject.Singleton
 class YandexDiskClient @Inject constructor(
     private val api: YandexDiskApi,
     private val auth: YandexAuthManager,
+    private val settingsRepository: SettingsRepository,
     @Named("plain") private val plainHttp: OkHttpClient
 ) : CloudClient {
 
     override val provider: CloudProvider = CloudProvider.YANDEX
 
-    override suspend fun ensureStorage() {
-        cloudCall {
-            val response = api.createFolder(FOLDER_PATH)
+    private suspend fun folderPath(): String = CloudFolderPath.diskPath(
+        CloudFolderPath.fullFolderPath(
+            CloudFolderPath.normalizeParent(settingsRepository.settings.first().cloudFolder)
+        )
+    )
+
+    override suspend fun ensureStorage() = cloudCall {
+        var current = ""
+        CloudFolderPath.driveSegments(folderPath().removePrefix("/")).forEach { segment ->
+            current += "/$segment"
+            val response = api.createFolder(current)
             if (!response.isSuccessful && response.code() != 409) {
-                throw CloudException("Не удалось создать папку на Диске: HTTP ${response.code()}")
+                throw CloudException("Не удалось создать папку $current на Диске: HTTP ${response.code()}")
             }
         }
     }
 
     override suspend fun listDayFiles(): List<RemoteDayFile> = cloudCall {
-        api.resources(FOLDER_PATH)._embedded?.items.orEmpty().mapNotNull { item ->
+        api.resources(folderPath())._embedded?.items.orEmpty().mapNotNull { item ->
             item.path?.let { path ->
                 RemoteDayFile(
                     id = path,
@@ -77,22 +88,9 @@ class YandexDiskClient @Inject constructor(
         return httpGetBytes(plainHttp, href)
     }
 
-    private suspend fun publicDownloadHref(publicKeyUrl: String): String =
-        withContext(Dispatchers.IO) {
-            val url = "https://cloud-api.yandex.net/v1/disk/public/resources/download" +
-                "?public_key=${URLEncoder.encode(publicKeyUrl, "UTF-8")}"
-            val request = Request.Builder().url(url).get().build()
-            plainHttp.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) throw CloudException("HTTP ${response.code} для публичной ссылки")
-                val body = response.body?.string() ?: throw CloudException("Пустой ответ")
-                defaultJson.decodeFromString(YandexLinkDto.serializer(), body).href
-                    ?: throw CloudException("Не удалось получить ссылку скачивания")
-            }
-        }
-
     override suspend fun deleteFilesOlderThan(cutoffMillis: Long): Int = cloudCall {
         var deleted = 0
-        val items = api.resources(FOLDER_PATH)._embedded?.items.orEmpty()
+        val items = api.resources(folderPath())._embedded?.items.orEmpty()
         for (item in items) {
             val path = item.path ?: continue
             val modified = parseIsoMillis(item.modified)
@@ -106,9 +104,19 @@ class YandexDiskClient @Inject constructor(
 
     fun isAvailable(): Boolean = auth.isConfigured
 
-    private fun dayFilePath(dayKey: String): String = "$FOLDER_PATH/${DayKeys.fileName(dayKey)}"
+    private suspend fun dayFilePath(dayKey: String): String =
+        "${folderPath()}/${DayKeys.fileName(dayKey)}"
 
-    companion object {
-        private const val FOLDER_PATH = "/TraceDay"
-    }
+    private suspend fun publicDownloadHref(publicKeyUrl: String): String =
+        withContext(Dispatchers.IO) {
+            val url = "https://cloud-api.yandex.net/v1/disk/public/resources/download" +
+                "?public_key=${URLEncoder.encode(publicKeyUrl, "UTF-8")}"
+            val request = Request.Builder().url(url).get().build()
+            plainHttp.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw CloudException("HTTP ${response.code} для публичной ссылки")
+                val body = response.body?.string() ?: throw CloudException("Пустой ответ")
+                defaultJson.decodeFromString(YandexLinkDto.serializer(), body).href
+                    ?: throw CloudException("Не удалось получить ссылку скачивания")
+            }
+        }
 }

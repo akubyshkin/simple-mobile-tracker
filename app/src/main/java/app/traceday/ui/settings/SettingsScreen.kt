@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.PlayArrow
@@ -23,8 +24,10 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -134,6 +137,31 @@ fun SettingsScreen(vm: SettingsViewModel = hiltViewModel()) {
         }
 
         SectionCard(stringResource(R.string.settings_section_cloud)) {
+            var folder by remember(state.settings.cloudFolder) {
+                mutableStateOf(state.settings.cloudFolder)
+            }
+            OutlinedTextField(
+                value = folder,
+                onValueChange = { folder = it },
+                label = { Text("Путь к папке TraceDay") },
+                supportingText = {
+                    Text("Пусто — корень диска. Пример: Backups/Geo — будет создана Backups/Geo/TraceDay")
+                },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                trailingIcon = {
+                    if (folder != state.settings.cloudFolder) {
+                        IconButton(onClick = { vm.setCloudFolder(folder) }) {
+                            Icon(
+                                Icons.Filled.Check,
+                                contentDescription = "Сохранить путь",
+                                tint = MaterialTheme.colorScheme.secondary
+                            )
+                        }
+                    }
+                }
+            )
+            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
             ProviderRow(
                 label = stringResource(R.string.settings_provider_none),
                 selected = state.settings.cloud == CloudProviderOption.NONE,

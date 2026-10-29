@@ -22,6 +22,7 @@ data class AppSettings(
     val intervalSeconds: Int = 60,
     val accuracy: AccuracyMode = AccuracyMode.HIGH,
     val cloud: CloudProviderOption = CloudProviderOption.NONE,
+    val cloudFolder: String = "",
     val autoStartOnBoot: Boolean = false,
     val trackingRunning: Boolean = false,
     val lastSyncAt: Long = 0,
@@ -38,6 +39,7 @@ class SettingsRepository @Inject constructor(
         val INTERVAL = intPreferencesKey("interval_seconds")
         val ACCURACY = stringPreferencesKey("accuracy_mode")
         val CLOUD = stringPreferencesKey("cloud_provider")
+        val CLOUD_FOLDER = stringPreferencesKey("cloud_folder")
         val AUTO_START = booleanPreferencesKey("auto_start_on_boot")
         val TRACKING_RUNNING = booleanPreferencesKey("tracking_running")
         val LAST_SYNC_AT = longPreferencesKey("last_sync_at")
@@ -50,6 +52,7 @@ class SettingsRepository @Inject constructor(
             intervalSeconds = (p[Keys.INTERVAL] ?: 60).coerceIn(10, 900),
             accuracy = runCatching { AccuracyMode.valueOf(p[Keys.ACCURACY] ?: "") }.getOrDefault(AccuracyMode.HIGH),
             cloud = runCatching { CloudProviderOption.valueOf(p[Keys.CLOUD] ?: "") }.getOrDefault(CloudProviderOption.NONE),
+            cloudFolder = app.traceday.cloud.CloudFolderPath.normalizeParent(p[Keys.CLOUD_FOLDER]),
             autoStartOnBoot = p[Keys.AUTO_START] ?: false,
             trackingRunning = p[Keys.TRACKING_RUNNING] ?: false,
             lastSyncAt = p[Keys.LAST_SYNC_AT] ?: 0L,
@@ -63,6 +66,10 @@ class SettingsRepository @Inject constructor(
     suspend fun setAccuracy(mode: AccuracyMode) = edit { it[Keys.ACCURACY] = mode.name }
 
     suspend fun setCloud(provider: CloudProviderOption) = edit { it[Keys.CLOUD] = provider.name }
+
+    suspend fun setCloudFolder(folder: String) = edit {
+        it[Keys.CLOUD_FOLDER] = app.traceday.cloud.CloudFolderPath.normalizeParent(folder)
+    }
 
     suspend fun setAutoStart(enabled: Boolean) = edit { it[Keys.AUTO_START] = enabled }
 

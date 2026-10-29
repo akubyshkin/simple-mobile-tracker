@@ -85,6 +85,10 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch { settingsRepository.setAutoStart(enabled) }
     }
 
+    fun setCloudFolder(folder: String) {
+        viewModelScope.launch { settingsRepository.setCloudFolder(folder) }
+    }
+
     fun syncNow() {
         SyncScheduler.syncNow(appContext)
     }

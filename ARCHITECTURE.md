@@ -84,8 +84,8 @@ sequenceDiagram
 
 `CloudClient` (интерфейс): `ensureStorage`, `listDayFiles`, `uploadDayFile`, `publishDayFile`, `downloadShared`, `deleteFilesOlderThan`. Реализации:
 
-- **GoogleDriveClient**: папка `TraceDay` в корне; создание файла метаданными + `uploadType=media` (перезапись); публикация — permission `anyone/reader` + `webViewLink`; токен через `GoogleAuthUtil` (аккаунт из Google Sign-In), refresh и инвалидация в OkHttp-интерцепторе (401 → clearToken → повтор)
-- **YandexDiskClient**: `/TraceDay` на диске; upload через временный `href` (PUT без авторизации — предподписанная ссылка); публикация — `publish` + `public_url`; OAuth: код по redirect `traceday://oauth2` (Custom Tabs) → обмен/refresh на `oauth.yandex.ru/token`; импорт публичных ссылок — `public/resources/download` без авторизации
+- **GoogleDriveClient**: настраиваемая папка (Настройки → «Путь к папке TraceDay», пусто = корень; итоговый путь `<родитель>/TraceDay`, вложенные сегменты создаются по цепочке от корня, id кэшируется); создание файла метаданными + `uploadType=media` (перезапись); публикация — permission `anyone/reader` + `webViewLink`; токен через `GoogleAuthUtil` (аккаунт из Google Sign-In), refresh и инвалидация в OkHttp-интерцепторе (401 → clearToken → повтор)
+- **YandexDiskClient**: путь `/<родитель>/TraceDay` на диске (сегменты создаются, 409 игнорируется); upload через временный `href` (PUT без авторизации — предподписанная ссылка); публикация — `publish` + `public_url`; OAuth: код по redirect `traceday://oauth2` (Custom Tabs, state-проверка) → обмен/refresh на `oauth.yandex.ru/token`; импорт публичных ссылок — `public/resources/download` без авторизации
 
 Выбор провайдера — настройка в DataStore; `CloudRepository` маршрутизирует и хранит состояние авторизации (`TokenStore` на EncryptedSharedPreferences + StateFlow для UI).
 
